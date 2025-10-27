@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Discount Predictor - Find Best Deals</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='predict.css') }}">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <i class="fas fa-tags"></i>
+        <span>Discount Finder</span>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/predict" class="active">Predict Product Discounts</a></li> 
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="page-header">
+      <h1 class="page-title">🎯 Product Discount Predictor</h1>
+      <p class="page-subtitle">Find the best platform and discount for your next purchase using AI</p>
+    </div>
+
+    <!-- Prediction Form -->
+    <div class="prediction-wrapper">
+      <h2 class="form-title">What are you looking to buy?</h2>
+      <form id="predictionForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label><i class="fas fa-th-large"></i> Product Category</label>
+            <select id="category" required>
+              <option value="">Select Product Category</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Mobile">Mobile</option>
+              <option value="Fashion Accessories">Fashion Accessories</option>
+              <option value="Clothing">Clothing</option>
+              <option value="Footwear">Footwear</option>
+              <option value="Home & Kitchen">Home & Kitchen</option>
+              <option value="Sports">Sports</option>
+              <option value="Beauty">Beauty</option>
+              <option value="Kids">Kids</option>
+              <option value="Accessories">Accessories</option>
+            </select>
+          </div> 
+
+          <div class="form-group">
+            <label><i class="fas fa-rupee-sign"></i> Your Budget (₹)</label>
+            <input type="number" id="budget" placeholder="Enter your budget" required min="100" max="100000" step="100">
+          </div>
+
+          <div class="form-group">
+            <label><i class="fas fa-store"></i> Preferred Platform (Optional)</label> 
+            <select id="platform">
+              <option value="">Let AI decide best platform</option>
+              <option value="Amazon">Amazon</option>
+              <option value="Flipkart">Flipkart</option>
+              <option value="Myntra">Myntra</option>
+              <option value="AJIO">AJIO</option>
+              <option value="Meesho">Meesho</option>
+              <option value="Shopify">Shopify</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="button-container">
+          <button type="submit" class="btn-predict" id="predictBtn">
+            <i class="fas fa-search"></i>
+            <span>Find Best Deals</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section" id="resultsSection">
+      <h2 class="results-title">🎉 Prediction Results</h2>
+      
+      <div class="results-grid">
+        <div class="result-card">
+          <h3><i class="fas fa-percentage"></i> Expected Discount</h3>
+          <div class="discount-display" id="discountValue">0%</div>
+          <p style="color: var(--text-secondary); margin-top: 0.5rem;">
+            Model: <span id="modelName">-</span>
+          </p>
+        </div>
+
+        <div class="result-card">
+          <h3><i class="fas fa-store"></i> Best Platform</h3>
+          <span class="platform-badge" id="platformBadge">-</span>
+          <p style="color: var(--text-secondary); margin-top: 1rem;">
+            Confidence: <span id="confidenceValue">-</span>
+          </p>
+        </div>
+
+        <div class="result-card">
+          <h3><i class="fas fa-calculator"></i> Price Breakdown</h3>
+          <div class="price-info">
+            <div class="price-item">
+              <span class="price-label">Original Price:</span>
+              <span class="price-value">₹<span id="originalPrice">0</span></span>
+            </div>
+            <div class="price-item">
+              <span class="price-label">Discounted Price:</span>
+              <span class="price-value">₹<span id="discountedPrice">0</span></span>
+            </div>
+            <div class="price-item">
+              <span class="price-label">You Save:</span>
+              <span class="price-value savings-highlight">₹<span id="savingsAmount">0</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-card" style="margin-top: 1.5rem;">
+        <h3><i class="fas fa-lightbulb"></i> Shopping Recommendations</h3>
+        <ul class="recommendations-list" id="recommendationsList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='predict.js') }}"></script>
+</body>
+</html> 

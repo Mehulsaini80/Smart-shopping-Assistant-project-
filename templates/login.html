@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SmartShop AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f0f23;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: auto;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Floating Background Elements */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image: 
+                radial-gradient(circle, rgba(102, 126, 234, 0.3) 1px, transparent 1px),
+                radial-gradient(circle, rgba(118, 75, 162, 0.2) 1.5px, transparent 1.5px),
+                radial-gradient(circle, rgba(56, 239, 125, 0.15) 1px, transparent 1px);
+            background-size: 
+                80px 80px,
+                120px 120px,
+                150px 150px;
+            background-position: 
+                0 0,
+                40px 60px,
+                75px 75px;
+            animation: drift 20s linear infinite;
+        }
+
+        @keyframes drift {
+            0% {
+                background-position: 0 0, 40px 60px, 75px 75px;
+            }
+            100% {
+                background-position: -80px -80px, -40px -60px, -75px -75px;
+            }
+        }
+
+        /* Floating Shopping Bag */
+        .floating-bag {
+            position: fixed;
+            font-size: 2rem;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+            animation: float-element 6s ease-in-out infinite;
+        }
+
+        .floating-bag:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+            color: #667eea;
+        }
+
+        .floating-bag:nth-child(2) {
+            top: 20%;
+            right: 15%;
+            animation-delay: 2s;
+            color: #764ba2;
+        }
+
+        .floating-bag:nth-child(3) {
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 4s;
+            color: #38ef7d;
+        }
+
+        .floating-bag:nth-child(4) {
+            bottom: 10%;
+            right: 10%;
+            animation-delay: 1s;
+            color: #667eea;
+        }
+
+        @keyframes float-element {
+            0%, 100% {
+                transform: translateY(0px) translateX(0px) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-30px) translateX(15px) rotate(5deg);
+            }
+            50% {
+                transform: translateY(-60px) translateX(0px) rotate(0deg);
+            }
+            75% {
+                transform: translateY(-30px) translateX(-15px) rotate(-5deg);
+            }
+        }
+
+        .container {
+            background: rgba(22, 33, 62, 0.95);
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-section i {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .logo-section h1 {
+            font-size: 1.8rem;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .logo-section p {
+            color: #667eea;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #999;
+        }
+
+        .show-password {
+            margin-top: 8px;
+        }
+
+        .show-password a {
+            font-size: 0.85rem;
+            color: #667eea;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .show-password a:hover {
+            text-decoration: underline;
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+
+        .remember-forgot input[type="checkbox"] {
+            margin-right: 5px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .remember-forgot a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .remember-forgot a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .signup-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: #fee;
+            border: 1px solid #fcc;
+            color: #c33;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes float-slow {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes float-icon {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-25px) rotate(5deg);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .logo-section h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-bag"><i class="fas fa-shopping-bag"></i></div>
+    <div class="floating-bag"><i class="fas fa-shopping-cart"></i></div>
+    <div class="floating-bag"><i class="fas fa-tag"></i></div>
+    <div class="floating-bag"><i class="fas fa-box"></i></div>
+
+    <div class="container">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <i class="fas fa-shopping-bag"></i>
+            <h1>SmartShop AI</h1>
+            <p>Smart Shopping Starts Here</p>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-message" id="errorMessage"></div>
+
+        <!-- Login Form -->
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="your@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <div class="show-password">
+                    <a href="#" id="togglePassword">Show Password</a>
+                </div>
+            </div>
+
+            <div class="remember-forgot">
+                <label>
+                    <input type="checkbox" id="remember">
+                    Remember me
+                </label>
+                <a href="#">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn-login" id="loginBtn">
+                Login
+            </button>
+        </form>
+
+        <!-- Signup Link -->
+        <div class="signup-link">
+            Don't have an account? <a href="/signup">Sign Up</a>
+        </div>
+    </div>
+
+    <script>
+    const loginForm = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+    const errorMessage = document.getElementById('errorMessage');
+
+    // Show/Hide Password
+    togglePassword.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            togglePassword.textContent = 'Hide Password';
+        } else {
+            passwordInput.type = 'password';
+            togglePassword.textContent = 'Show Password';
+        }
+    });
+
+    // Login Form Submit
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorMessage.classList.remove('show');
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const remember = document.getElementById('remember').checked;
+
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<span class="spinner"></span> Logging in...';
+
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ email, password, remember })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                if (remember) {
+                    localStorage.setItem('authToken', data.token);
+                }
+                window.location.href = '/';
+            } else {
+                showError(data.error || 'Invalid email or password');
+            }
+        } catch (err) {
+            console.error('Login error:', err);
+            showError('An error occurred. Please try again.');
+        } finally {
+            loginBtn.disabled = false;
+            loginBtn.textContent = 'Login';
+        }
+    });
+
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.classList.add('show');
+        setTimeout(() => {
+            errorMessage.classList.remove('show');
+        }, 5000);
+    }
+</script> 
+</body>
+</html>
