@@ -287,4 +287,5 @@ def main():
     print("\n✨ You can now run the Flask app with: python app.py")
 
 if __name__ == "__main__":
+
     main()
